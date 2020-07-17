@@ -1,6 +1,6 @@
 /* Two timers with rotary selectors, along with connection to DFPlayer Mini for alarm sounds*/
 
-#include <Wire.h> 
+#include <Wire.h>
 #include <DFPlayer_Mini_Mp3.h>
 
 SoftwareSerial dfplayerserial(10, 11); // RX, TX
@@ -50,8 +50,8 @@ void setup() {
   pinMode(RotaryEncoder2, INPUT);
   pinMode(PushButton2, INPUT);
 
-  attachInterrupt(0, Direction1, RISING); // 0/1 means pin 2/3
-  attachInterrupt(1, Direction2, RISING); // 0/1 means pin 2/3
+  attachInterrupt(0, Direction1, CHANGE); // 0/1 means pin 2/3
+  attachInterrupt(1, Direction2, CHANGE); // 0/1 means pin 2/3
 
   // Initial direction is undefined
   direction1 = 0;
@@ -65,37 +65,72 @@ void setup() {
   display2.init();                              // Initializes the display
   display2.setBrightness(4);
   display2.switchColon();
+  digitalWrite (InterruptPin1, HIGH);
+  digitalWrite (RotaryEncoder1, HIGH);
+  digitalWrite (InterruptPin2, HIGH);
+  digitalWrite (RotaryEncoder2, HIGH);
 }
 void receiveEvent(int bytes) {
   x = Wire.read();  //Receive value from master board
   Serial.print(x);
   mp3_play (x);
 }
-void Direction1()
-{
-  // This function is triggered by an interrupt from the rotary encoder on pin "InterruptPin1"
 
-  // Interrupt has occurred, now check the other rotary encoder pin to establish direction
-  if (digitalRead(RotaryEncoder1))direction1 = +1;
-  else                           direction1 = -1;
-  return;
+void Direction1() {
+  if (digitalRead(InterruptPin1) == HIGH)                        // found a low-to-high on channel A
+  {
+    if (digitalRead(RotaryEncoder1) == LOW)                  // check channel B to see which way encoder is turning
+    {
+      direction1 = -1;      // CCW
+    }
+    else
+    {
+      direction1 = +1;      // CW
+    }
+  }
+  else                                          // found a high-to-low on channel A
+  {
+    if (digitalRead(RotaryEncoder1) == LOW)
+    {
+      direction1 = +1;      // CW
+    }
+    else
+    {
+      direction1 = -1;      // CCW
+    }
+  }
 }
 
-
-void Direction2()
-{
-  // This function is triggered by an interrupt from the rotary encoder on pin "InterruptPin2"
-
-  // Interrupt has occurred, now check the other rotary encoder pin to establish direction
-  if (digitalRead(RotaryEncoder2))direction2 = +1;
-  else                           direction2 = -1;
-  return;
+void Direction2() {
+  if (digitalRead(InterruptPin2) == HIGH)                        // found a low-to-high on channel A
+  {
+    if (digitalRead(RotaryEncoder2) == LOW)                  // check channel B to see which way encoder is turning
+    {
+      direction2 = -1;      // CCW
+    }
+    else
+    {
+      direction2 = +1;      // CW
+    }
+  }
+  else                                          // found a high-to-low on channel A
+  {
+    if (digitalRead(RotaryEncoder2) == LOW)
+    {
+      direction2 = +1;      // CW
+    }
+    else
+    {
+      direction2 = -1;      // CCW
+    }
+  }
 }
+
 void loop()
 {
   // Pre-defined starting times in seconds, up to an hour for Timer #1 and #2
   int Times1[] = {0, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600, 660, 720, 780, 840, 900, 960, 1020, 1080, 1140, 1200, 1260,
-                  1320, 1380, 1440, 1500, 1560, 1620, 1680, 1740, 1800, 1860, 1920, 19802040, 2100, 2160, 2220, 2280, 2340, 2400, 2460, 2520,
+                  1320, 1380, 1440, 1500, 1560, 1620, 1680, 1740, 1800, 1860, 1920, 1980, 2040, 2100, 2160, 2220, 2280, 2340, 2400, 2460, 2520,
                   2580, 2640, 2700, 2760, 2820, 2880, 2940, 3000, 3060, 3120, 3180, 3240, 3300, 3360, 3420, 3480, 3540, 3600
                  };
   int Times2[] = {0, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600, 660, 720, 780, 840, 900, 960, 1020, 1080, 1140, 1200, 1260,
@@ -166,9 +201,9 @@ void loop()
 
     // Display current time
     WriteTime1(Time1);
+   
     WriteTime2(Time2);
-
-
+ 
     // Check for HIGH on pin PushButton1 - this is the switch to start, pause and reset the timer
     // A short press toggles start/pause, a longer press resets to zero
     if (digitalRead(PushButton1) == HIGH)
@@ -191,8 +226,8 @@ void loop()
           while (digitalRead(PushButton1) == HIGH); // Loop until button is released
           break;
         }
-      } 
-      
+      }
+
       // Just a quick press so start or pause
       if (Reset1 == 0)
       { StartCounting1 = 1 - StartCounting1; // Toggles start/pause

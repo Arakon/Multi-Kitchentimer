@@ -44,8 +44,10 @@ void setup() {
 
   pinMode(Tealight1, OUTPUT);
   pinMode(Tealight2, OUTPUT);
-
-  attachInterrupt(0, Direction1, RISING); // 0/1 means pin 2/3
+  digitalWrite (InterruptPin1, HIGH);
+  digitalWrite (RotaryEncoder1, HIGH);
+  
+  attachInterrupt(0, Direction1, CHANGE); // 0/1 means pin 2/3
 
 
   // Initial direction is undefined
@@ -59,16 +61,30 @@ void setup() {
 
 }
 
-void Direction1()
-{
-  // This function is triggered by an interrupt from the rotary encoder on pin "InterruptPin1"
-
-  // Interrupt has occurred, now check the other rotary encoder pin to establish direction
-  if (digitalRead(RotaryEncoder1))direction1 = +1;
-  else                            direction1 = -1;
-  return;
+void Direction1() {
+  if (digitalRead(InterruptPin1) == HIGH)                        // found a low-to-high on channel A
+  {
+    if (digitalRead(RotaryEncoder1) == LOW)                  // check channel B to see which way encoder is turning
+    {
+      direction1 = -1;      // CCW
+    }
+    else
+    {
+      direction1 = +1;      // CW
+    }
+  }
+  else                                          // found a high-to-low on channel A
+  {
+    if (digitalRead(RotaryEncoder1) == LOW)
+    {
+      direction1 = +1;      // CW
+    }
+    else
+    {
+      direction1 = -1;      // CCW
+    }
+  }
 }
-
 void loop()
 {
   // Pre-defined starting times in seconds, up to 99 min for Timer #3
