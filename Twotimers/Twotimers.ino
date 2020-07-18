@@ -10,6 +10,8 @@ SoftwareSerial dfplayerserial(10, 11); // RX, TX
 #define d1_CLK A1
 #define d2_DIO A2
 #define d2_CLK A3
+#define amp 8
+#define busy 12
 
 TM1637 display1(d1_CLK, d1_DIO);
 TM1637 display2(d2_CLK, d2_DIO);
@@ -37,7 +39,7 @@ void setup() {
   Serial.println("Timer V1.0");
   mp3_set_serial (dfplayerserial);  //set softwareSerial for DFPlayer-mini mp3 module
   mp3_set_volume (30);
-  mp3_play (1);
+  //mp3_play (1);
 
 
   // Set up pins
@@ -49,6 +51,9 @@ void setup() {
   pinMode(InterruptPin2, INPUT);
   pinMode(RotaryEncoder2, INPUT);
   pinMode(PushButton2, INPUT);
+
+  pinMode(amp, OUTPUT);
+  pinMode(busy, INPUT);
 
   attachInterrupt(0, Direction1, CHANGE); // 0/1 means pin 2/3
   attachInterrupt(1, Direction2, CHANGE); // 0/1 means pin 2/3
@@ -88,17 +93,17 @@ void Direction1() {
       direction1 = +1;      // CW
     }
   }
-  else                                          // found a high-to-low on channel A
-  {
-    if (digitalRead(RotaryEncoder1) == LOW)
+  /*  else                                          // found a high-to-low on channel A
     {
-      direction1 = +1;      // CW
-    }
-    else
-    {
-      direction1 = -1;      // CCW
-    }
-  }
+      if (digitalRead(RotaryEncoder1) == LOW)
+      {
+        direction1 = +1;      // CW
+      }
+      else
+      {
+        direction1 = -1;      // CCW
+      }
+    }*/
 }
 
 void Direction2() {
@@ -113,17 +118,17 @@ void Direction2() {
       direction2 = +1;      // CW
     }
   }
-  else                                          // found a high-to-low on channel A
-  {
-    if (digitalRead(RotaryEncoder2) == LOW)
+  /*  else                                          // found a high-to-low on channel A
     {
-      direction2 = +1;      // CW
-    }
-    else
-    {
-      direction2 = -1;      // CCW
-    }
-  }
+      if (digitalRead(RotaryEncoder2) == LOW)
+      {
+        direction2 = +1;      // CW
+      }
+      else
+      {
+        direction2 = -1;      // CCW
+      }
+    }*/
 }
 
 void loop()
@@ -201,9 +206,15 @@ void loop()
 
     // Display current time
     WriteTime1(Time1);
-   
     WriteTime2(Time2);
- 
+
+    if (digitalRead(busy) == LOW) //check mp3 player status, enable amp if playing
+    { digitalWrite(amp, HIGH);
+    }
+    else {
+      digitalWrite(amp, LOW);
+    }
+
     // Check for HIGH on pin PushButton1 - this is the switch to start, pause and reset the timer
     // A short press toggles start/pause, a longer press resets to zero
     if (digitalRead(PushButton1) == HIGH)

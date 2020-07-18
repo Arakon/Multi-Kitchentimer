@@ -1,6 +1,6 @@
 /* This timer has 1 rotary encoder timer and 2 buttons with pre-set alarm times. Sending the number of the MP3 to play via I2c.*/
- 
- 
+
+
 #include <Wire.h>
 #include <TM1637.h>
 #include <Debounce.h>
@@ -10,8 +10,8 @@
 
 TM1637 display1(d1_CLK, d1_DIO);
 
-int Tealight1 = 6; //yellow
-int Tealight2 = 7; // blue
+int Tealight1 = 7; // blue
+int Tealight2 = 6; //yellow
 
 int index1;
 volatile int direction1;
@@ -19,8 +19,8 @@ int InterruptPin1 = 2;
 int RotaryEncoder1 = 5;
 int PushButton1 = 4;
 
-int Tea1 = 8;
-int Tea2 = 9;
+int Tea1 = 9;
+int Tea2 = 8;
 int TeaChris = 180;
 int TeaSascha = 480;
 
@@ -46,7 +46,7 @@ void setup() {
   pinMode(Tealight2, OUTPUT);
   digitalWrite (InterruptPin1, HIGH);
   digitalWrite (RotaryEncoder1, HIGH);
-  
+
   attachInterrupt(0, Direction1, CHANGE); // 0/1 means pin 2/3
 
 
@@ -73,17 +73,17 @@ void Direction1() {
       direction1 = +1;      // CW
     }
   }
-  else                                          // found a high-to-low on channel A
-  {
-    if (digitalRead(RotaryEncoder1) == LOW)
+  /*  else                                          // found a high-to-low on channel A
     {
-      direction1 = +1;      // CW
-    }
-    else
-    {
-      direction1 = -1;      // CCW
-    }
-  }
+      if (digitalRead(RotaryEncoder1) == LOW)
+      {
+        direction1 = +1;      // CW
+      }
+      else
+      {
+        direction1 = -1;      // CCW
+      }
+    }*/
 }
 void loop()
 {
@@ -167,7 +167,7 @@ void loop()
           while (digitalRead(PushButton1) == HIGH); // Loop until button is released
           break;
         }
-      } 
+      }
 
       // Just a quick press so start or pause
       if (Reset1 == 0)
