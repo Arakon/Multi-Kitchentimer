@@ -236,7 +236,7 @@ void loop()
         if (TimeTea2 == 0)
         { CountDownTea2 = 0;
           //indexTea2=0;
-          TimeTea1 = TeaSascha;
+          TimeTea2 = TeaSascha;
           //Alarm now (Send Data)
           x = 5;
           Wire.beginTransmission(9);  //9 here is the address of the slave board
