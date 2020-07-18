@@ -4,7 +4,7 @@ I got tired quickly of needing 3+ mechanical kitchen timers that either didn't k
 This is the result.
 
 - 3 adjustable timers, two with up to 60, one with up to 99 minutes
-- 2 preset tea timers for my girlfriend and me that set the time to 3 and 8 minutes respectively, independant of the main timers
+- 2 preset tea timers for my girlfriend and me that set the time to 3 and 8 minutes respectively, independant of the main timers. LED ring around the button lights up   while the timer is active.
 - Alarm tones are MP3 files played by a DFPlayer Mini
 - PAM8403 amplifier is used to ensure enough volume
 - Running an Arduino Nano and an Arduino Pro Mini, since I ran out of I/O pins.
