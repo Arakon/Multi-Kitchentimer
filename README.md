@@ -14,6 +14,7 @@ This is the result.
 To do:
 
 ~~- Currently waiting for an audio bluetooth transmitter that will enable multi-room alarms with a basic bluetooth speaker~~
+
 Added BT transmitter (KCX_BT_EMITTER). Sadly, it turns out its range is so bad, it can't even get the audio signal to a speaker one room over, let alone down the hallway.
 
 Video demo (volume warning):
