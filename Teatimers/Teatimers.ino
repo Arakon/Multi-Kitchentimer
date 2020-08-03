@@ -62,6 +62,7 @@ void setup() {
 }
 
 void Direction1() {
+  delay(2);s
   if (digitalRead(InterruptPin1) == HIGH)                        // found a low-to-high on channel A
   {
     if (digitalRead(RotaryEncoder1) == LOW)                  // check channel B to see which way encoder is turning

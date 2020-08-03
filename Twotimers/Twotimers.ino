@@ -38,7 +38,7 @@ void setup() {
   dfplayerserial.begin (9600);
   Serial.println("Timer V1.0");
   mp3_set_serial (dfplayerserial);  //set softwareSerial for DFPlayer-mini mp3 module
-  mp3_set_volume (30);
+  mp3_set_volume (27);
   //mp3_play (1);
 
 
@@ -82,6 +82,7 @@ void receiveEvent(int bytes) {
 }
 
 void Direction1() {
+  delay(2);
   if (digitalRead(InterruptPin1) == HIGH)                        // found a low-to-high on channel A
   {
     if (digitalRead(RotaryEncoder1) == LOW)                  // check channel B to see which way encoder is turning
@@ -107,6 +108,7 @@ void Direction1() {
 }
 
 void Direction2() {
+  delay(2);
   if (digitalRead(InterruptPin2) == HIGH)                        // found a low-to-high on channel A
   {
     if (digitalRead(RotaryEncoder2) == LOW)                  // check channel B to see which way encoder is turning
