@@ -10,6 +10,7 @@ This is the result.
 - Running an Arduino Nano and an Arduino Pro Mini, since I ran out of I/O pins.
 - Pro Mini running the tea timers and timer #3 sends the MP3 number to play to the Nano via I2c
 
+# I do NOT have a circuit diagram. Connections can be traced out from the code, but so far I haven't had the time or energy to create one.
 
 To do:
 
