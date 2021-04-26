@@ -21,4 +21,4 @@ Added BT transmitter (KCX_BT_EMITTER). Sadly, it turns out its range is so bad, 
 Video demo (volume warning):
 https://youtu.be/tqgynjzURug
 
-![Image](/IMG_20200718_173309.jpg)
+![PXL_20210426_073124266](https://user-images.githubusercontent.com/12016360/116048688-b69c1980-a675-11eb-9a17-f1ec69afe43d.jpg)
